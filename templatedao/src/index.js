@@ -4,8 +4,8 @@ import "./index.css";
 import App from "./App.jsx";
 import {ThirdwebWeb3Provider} from '@3rdweb/hooks';
 
-//4: polygon mumbai
-const supportedChainIds = [80001]
+//polygon
+const supportedChainIds = [80001,137]
 //metamask is injected wallet
 const connectors = {
   injected:{}

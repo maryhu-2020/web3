@@ -1,0 +1,5 @@
+export const properties = {
+    NETWORK_PROVIDER:"https://rpc-mumbai.maticvigil.com",
+    THIRDWEB_DROP_ID:"0x61304cf44411eA84180831Bd41cE96135c7a53Db",
+    THIRDWEB_DROP_GOVERNANCE_TOKEN_ID:"0xf74c875D6552a016c3C6c9E784b56e11BE13ec1B"
+}
