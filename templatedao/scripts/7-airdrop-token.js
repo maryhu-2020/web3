@@ -12,26 +12,25 @@ const tokenModule = sdk.getTokenModule(process.env.THIRDWEB_DROP_GOVERNANCE_TOKE
 
 (async() => {
     try{
-        const walletAddress = await bundleDropModule.getAllClaimerAddresses('0');
-        if( walletAddress.length === 0){
-            console.warn('😹 you need some friends to claim your free NFT');
+        const claimedAddresses = await bundleDropModule.getAllClaimerAddresses('0');
+        if( claimedAddresses.length === 0){
+            console.warn('there is no one claimed to be a member yet');
             process.exit(0); 
         }
 
-        const airdropTargets = walletAddress.map( (address) => {
-            const randomAmount = Math.floor(Math.random() * (10000 - 1000 + 1) + 1000);
-            console.log("✅ Going to airdrop", randomAmount, "tokens to", address);
+        const airdropTargets = claimedAddresses.map( (address) => {
+            const airdropAmount = process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_AIRDROP_AMOUNT;
+            console.log("Going to airdrop", airdropAmount, "tokens to", address);
 
             const airdropTarget = {
                 address,
-                amount: ethers.utils.parseUnits(randomAmount.toString(),18)
+                amount: ethers.utils.parseUnits(airdropAmount.toString(),18)
             }
             return airdropTarget;
         } );
 
-        console.log('👍🏽 start airdropping...');
         await tokenModule.transferBatch(airdropTargets);
-        console.log('🔥 air dropped tokens to all the holders of the NFT (Save Cats DAO members)');
+        console.log('airdropped tokens to all the holders of the membership NFT');
 
     }catch(error){
         console.error('😡 failed to airdrop token');
