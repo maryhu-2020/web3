@@ -1,11 +1,14 @@
 import { ethers } from "ethers";
 import sdk from "./1-initialize-sdk.js";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 //ERC-1155 membership NFT contract
-const bundleDropModule = sdk.getBundleDropModule('0x7615B5989Ff340324D894497D277C67aF4D75437');
+const bundleDropModule = sdk.getBundleDropModule(process.env.THIRDWEB_DROP_ID);
 
 //ERC-20 Governance token contract
-const tokenModule = sdk.getTokenModule('0x16Fc14070E9fdA5f8ea8e03dA3aa3b0297d1d67e');
+const tokenModule = sdk.getTokenModule(process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_ID);
 
 (async() => {
     try{

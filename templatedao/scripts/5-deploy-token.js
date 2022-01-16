@@ -1,16 +1,19 @@
 import sdk from './1-initialize-sdk.js';
+import dotenv from 'dotenv';
 
-const app = sdk.getAppModule('0x36948dc9ad22AB547a10572AEAd919A24997B82A');
+dotenv.config();
+
+const app = sdk.getAppModule(process.env.THIRDWEB_APP_ID);
 
 (async()=>{
     try{
         const tokenModule = await app.deployTokenModule({
-            name: 'Save Cats DAO Governance Token',
-            symbol: 'Nikki',
+            name: process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_NAME,
+            symbol:process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_SYMBOL,
         });
-        console.log('😺 successfully deployed token module at ', tokenModule.address);
+        console.log('successfully deployed token module at ', tokenModule.address);
     }catch(error){
-        console.log('😡 failed to deploy token module',error);
+        console.log('failed to deploy token module',error);
     }
 
 })();

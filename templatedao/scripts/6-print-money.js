@@ -1,15 +1,18 @@
 import {ethers} from 'ethers';
 import sdk from './1-initialize-sdk.js';
+import dotenv from 'dotenv';
 
-const tokenModule = sdk.getTokenModule('0x16Fc14070E9fdA5f8ea8e03dA3aa3b0297d1d67e');
+dotenv.config();
+
+const tokenModule = sdk.getTokenModule(process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_ID);
 
 (async ()=>{
     try{
-        const amount = 1_000_000;
-        const amountWith18Decimal = ethers.utils.parseUnits(amount.toString(), 18);
+        const amount = process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_TOTAL_SUPPLY;
+        const amountWith18Decimal = ethers.utils.parseUnits(amount, 18);
         await tokenModule.mint(amountWith18Decimal);
         const totalSupply = await tokenModule.totalSupply();
-        console.log('😻🔥🚀 there are now ',ethers.utils.formatUnits(totalSupply,18), '$Nikki in circulating..');
+        console.log('there are ',ethers.utils.formatUnits(totalSupply,18), 'governance tokens just minted. they will be in circulating..');
     }catch(error){
         console.log(' failed to print money', error);
     }
