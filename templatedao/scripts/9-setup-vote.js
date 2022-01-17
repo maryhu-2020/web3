@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import sdk from './1-initialize-sdk.js'
 
-const tokenModule = sdk.getTokenModule('0x16Fc14070E9fdA5f8ea8e03dA3aa3b0297d1d67e');
-const votingModule = sdk.getVoteModule('0x4091cbe3f14de91a9A302E70F8AD07FCf116FbC8');
+const tokenModule = sdk.getTokenModule(process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_ID);
+const votingModule = sdk.getVoteModule(process.env.THIRDWEB_VOTING_CONTRACT_ID);
 
 ( async() => {
     try{
@@ -14,13 +14,13 @@ const votingModule = sdk.getVoteModule('0x4091cbe3f14de91a9A302E70F8AD07FCf116Fb
     }
 
     try{
-        const ownedTokenBalance = await tokenModule.balanceOf( process.env.WALLET_ADDRESS);
+        const ownedTokenBalance = await tokenModule.balanceOf( process.env.WALLET_ADDRESS_MUMBAI);
         console.log('ownedTokenBalance: ', ownedTokenBalance );
         const ownedAmount = ethers.BigNumber.from( ownedTokenBalance.value);
         console.log('ownedAmount: ', ownedAmount );
-        const percent90 = ownedAmount.div(100).mul(9);
+        const percent = ownedAmount.div(100).mul(ethers.BigNumber.from(process.env.THIRDWEB_VOTING_OWNED_PERCENTAGE));
 
-        await tokenModule.transfer(votingModule.address, percent90 );
+        await tokenModule.transfer(votingModule.address, percent);
         console.log('successfully transferred token');
     }catch(error){
         console.error('failed to transfer token', error);

@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import sdk from './1-initialize-sdk.js';
 
-const tokenModule = sdk.getTokenModule('0x16Fc14070E9fdA5f8ea8e03dA3aa3b0297d1d67e');
-const votingModule = sdk.getVoteModule('0x4091cbe3f14de91a9A302E70F8AD07FCf116FbC8');
+const tokenModule = sdk.getTokenModule(process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_ID);
+const votingModule = sdk.getVoteModule(process.env.THIRDWEB_VOTING_CONTRACT_ID);
 
 ( async () => {
     try{

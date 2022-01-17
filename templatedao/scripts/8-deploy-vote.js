@@ -1,30 +1,23 @@
 import sdk from './1-initialize-sdk.js';
+import {ethers} from 'ethers';
+import dotenv from 'dotenv'
 
-const appModule = sdk.getAppModule('0x36948dc9ad22AB547a10572AEAd919A24997B82A');
+dotenv.config();
+const app = sdk.getAppModule(process.env.THIRDWEB_APP_ID);
 
 ( async() => {
     try{
-        const votingModule =  await appModule.deployVoteModule({
-            //governance contract name
-            name: 'Save Cats DAO Proposal',
-
-            //address of the governance token
-            votingTokenAddress: '0x16Fc14070E9fdA5f8ea8e03dA3aa3b0297d1d67e',
-
+        const votingModule =  await app.deployVoteModule({            
+            name: process.env.THIRDWEB_VOTING_PROPOSAL_NAME,
+            votingTokenAddress: process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_ID,
             proposalStartWaitTimeInSeconds: 0,
-
-            proposalVotingTimeInSeconds: 24 * 60 * 60,
-
-            votingQuorumFraction: 0,
-
-            minimumNumberOfTokensNeededToPropose: '10',
+            proposalVotingTimeInSeconds: 24 * 60 * 60 * parseInt(process.env.THIRDWEB_VOTING_DAYS.toString(), 10),
+            votingQuorumFraction: ethers.utils.parseUnits(process.env.THIRDWEB_VOTING_QUORUM_FRACTION.toString(),18),
+            minimumNumberOfTokensNeededToPropose: process.env.THIRDWEB_VOTING_MINIMAL_REQUIRED_NUMBER_OF_TOKENS,
         });
-
-        console.log(' successfully deployed voting module, address: ', votingModule.address);
-
-
+        console.log('successfully deployed voting module, address: ', votingModule.address);
     }catch(error){
-        console.error('  failed to create Voting module', error);
+        console.error('failed to create Voting module', error);
     }
 
 } )();

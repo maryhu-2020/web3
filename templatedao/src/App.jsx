@@ -29,61 +29,14 @@ const App = () => {
     checkClaimedMembership(address, drop, setHasClaimedNFT);    
   }, [address]);
 
-  /*
+  
   useEffect( () => {
-    //getBalancesOfAllMembers( hasClaimedNFT, drop, token, setMemberAddresses, setMemberTokenAmounts );
-    if ( !hasClaimedNFT){
-      return;
-    }
-    console.log('getBalancesOfAllMembers ');
+    //getBalancesOfAllMembers( hasClaimedNFT, drop, token, setMemberAddresses, setMemberTokenAmounts );    
+    getBalancesOfAllMembers(hasClaimedNFT,drop);
   
-  drop.getAllClaimerAddresses("0").then((addresses) => {
-    console.log("Members addresses", addresses)
-    setMemberAddresses(addresses);      
-  }).catch((err) => {
-    console.error("failed to get member list", err);
-  });
   }, [hasClaimedNFT]);
-  */
-
-  // This useEffect grabs all our the addresses of our members holding our NFT.
-  useEffect(() => {
-    if (!hasClaimedNFT) {
-      console.log('getBalancesOfAllMembers 0');
-      return;
-    }
-
-    console.log('getBalancesOfAllMembers 1');
-    drop
-      .getAllClaimerAddresses(0)
-      .then((addresess) => {
-        console.log("🚀 Members addresses", addresess);
-        setMemberAddresses(addresess);
-      })
-      .catch((err) => {
-        console.error("failed to get member list", err);
-      });
-  }, [hasClaimedNFT]);
-
-  // This useEffect grabs the # of token each member holds.
-  useEffect(() => {
-    if (!hasClaimedNFT) {
-      return;
-    }
-
-    // Grab all the balances.
-    token
-      .getAllHolderBalances()
-      .then((amounts) => {
-        console.log("👜 Amounts", amounts);
-        setMemberTokenAmounts(amounts);
-      })
-      .catch((err) => {
-        console.error("failed to get token amounts", err);
-      });
-  }, [hasClaimedNFT]);
-
   
+
   const memberList = useMemo(() => {
     return populateMemberList(memberAddresses, memberTokenAmounts );
   }, [memberAddresses, memberTokenAmounts]);
