@@ -4,10 +4,15 @@ import dotenv from 'dotenv';
 dotenv.config();
 const votingModule = sdk.getVoteModule(process.env.THIRDWEB_VOTING_CONTRACT_ID);
 
-( async() =>{
+( async() =>{    
     try{
-        await votingModule.execute(process.env.THIRDWEB_VOTING_PROPOSAL_ID);
-        console.log('Successfully executed proposal: ' + process.env.THIRDWEB_VOTING_PROPOSAL_ID);
+        const canExecute = await votingModule.canExecute(process.env.THIRDWEB_VOTING_PROPOSAL_ID);
+        console.log(canExecute);
+
+        if( canExecute){
+            await votingModule.execute(process.env.THIRDWEB_VOTING_PROPOSAL_ID);
+            console.log('Successfully executed proposal: ' + process.env.THIRDWEB_VOTING_PROPOSAL_ID);
+        }
     }catch(error){
         console.error('Failed to execute proposal', error);
         process.exit(1); 
