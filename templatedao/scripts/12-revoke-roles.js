@@ -1,13 +1,13 @@
 import sdk from './1-initialize-sdk.js';
 
-const tokenModule = sdk.getTokenModule('0x16Fc14070E9fdA5f8ea8e03dA3aa3b0297d1d67e');
+const tokenModule = sdk.getTokenModule(process.env.THIRDWEB_DROP_GOVERNANCE_TOKEN_ID);
 
 ( async () => {
     try{
         console.log('current roles: ', await tokenModule.getAllRoleMembers());
         await tokenModule.revokeAllRolesFromAddress( process.env.WALLET_ADDRESS);
         console.log('roles after being revoked: ', await tokenModule.getAllRoleMembers());
-        console.log("✅ Successfully revoked our superpowers from the ERC-20 contract");
+        console.log("Successfully revoked our superpowers from the ERC-20 contract");
     }catch(error){
         console.error('failed to revoke roles from the governance token creator (the superpwoer)', error);
     }
