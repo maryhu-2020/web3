@@ -1,5 +1,7 @@
 ## StarkNet Notes
 
+https://koopxyz.notion.site/going-all-in-starkware-f250983d562c454384384a5408bddf9c
+
 1. L2 Node
  - Provers
    - HD: >> L1 full node
