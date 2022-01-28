@@ -1,4 +1,4 @@
-# Basic Sample Hardhat Project
+# Basic Hardhat Project
 
 1. npx hardhat
 This command to create a basic hardhat project and install basic modules
@@ -30,3 +30,70 @@ This command to deploy the contract to blockchain per hardhat.config.js
 
 4. npx hardhat verify 0xc9E7f50B87a3Ec7cf59960612F985dE336eAf6F4 --network ropsten
 This command to verify the deployed contract
+
+# Ether Basics
+
+1. Transaction fee: 
+
+Transaction fee = n of gas * ( base fee + tip) = xxxxxxxxx gwei 
+
+# Solidity
+
+1. Value Types
+
+   - Boolean:   
+    ```
+    bool
+    ```
+
+   - Integers:  uint8 ~ uint258, int8 ~ int256 in steps of 8
+   
+   - Address:   adress, address payable
+     - Members of Addresses
+   
+   - Fixed-size byte arrays
+    ```
+    byte1, byte2,,,,byte32
+    ```
+   
+   - Dynamically-sized byte array
+    ```
+    bytes, string
+    ```
+   
+   - Address Literals
+    ```
+    0xdCad3a6d3569DF655070DEd06cb7A1b2Ccd1D3AF
+    ```
+   
+   - Rational and Integer Literals
+    ```
+    18, 1.2, 2e10, 123_000, 0x2eff_abde
+    ```
+
+   - String Literals and Types
+    ```
+    bytes32 samevar = "stringliteral"
+    ```
+
+   - Enums
+
+2. Function Types:
+
+    - external (public) /internal
+    - pure/view/payable
+
+3. Reference Types
+
+    - struct, array, mapping
+
+    - data location: 
+      - memory 
+        - lifetime is limited to an external function call
+      - storage
+        - state variables are stored
+        - the lifetime is limited to the lifetime of a contract
+      - calldata  
+        - contains the function arguments
+
+
