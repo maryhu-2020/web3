@@ -22,7 +22,7 @@ contract ExBallot {
 
     Proposal[] public proposals;
 
-    constructor( bytes32[] memory proposalNames ) {
+    constructor( bytes32[] memory proposalNames ) payable {
 
         chairperson = msg.sender;
         voters[chairperson].weight = 1;
