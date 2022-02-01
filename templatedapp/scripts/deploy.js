@@ -5,10 +5,13 @@ const main = async () => {
     console.log("deplying contract by: ", deployer.address);
     console.log("Account balance: ", accountBalance);
 
-    const mycontract = await hre.ethers.getContractFactory("WavePortal");    
-    const deployed_contract = await mycontract.deploy({
-        value:hre.ethers.utils.parseEther('0.0001'),
-    });
+    const mycontract = await hre.ethers.getContractFactory("ExBallot");   
+    const proposalNames = [];
+    proposalNames.push(ethers.utils.id('Proposal 1: Pass the infrature bill'));
+    proposalNames.push(ethers.utils.id('Proposal 2 - Print 2T USD in 2022'));
+    proposalNames.push(ethers.utils.id('Proposal 3 - Send xxxx to Mars on 4th of July, 2022'));   
+    
+    const deployed_contract = await mycontract.deploy(proposalNames,{value:hre.ethers.utils.parseEther('0.0001'),});
     await deployed_contract.deployed();
     
     console.log("the contract is deplayed at: ", deployed_contract.address);
