@@ -9,9 +9,9 @@ contract ExAuction {
     address public highestBidder;
     uint256 public highestBid;
 
-    mapping( address => uint256) pendingReturns;
+    mapping( address => uint256) public pendingReturns;
 
-    bool ended;
+    bool public ended;
 
     event HighestBidIncreased(address bidder, uint256 amount );
     event AuctionEnded(address winner, uint256 amount );
@@ -21,14 +21,18 @@ contract ExAuction {
     error AuctionNotYetEnded();
     error AuctionEndAlreadyCalled();
 
+    modifier onlyBefore(uint time){
+        if( block.timestamp > time)
+            revert AuctionAlreadyEnded();
+        _;    
+    }  
+
     constructor( uint256 biddingTime, address payable benefifiaryAdress ) {
         beneficiary = benefifiaryAdress;
         auctionEndTime = block.timestamp + biddingTime;
     }
 
-    function bid() external payable {
-        if( block.timestamp > auctionEndTime)
-            revert AuctionAlreadyEnded();
+    function bid() external payable onlyBefore( auctionEndTime) {       
 
         if ( msg.value < highestBid)
             revert BidNotHightEnough( highestBid);
