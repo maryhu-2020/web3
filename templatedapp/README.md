@@ -30,8 +30,9 @@ This command to deploy the contract to blockchain per hardhat.config.js
 
 4. npx hardhat verify 0xc9E7f50B87a3Ec7cf59960612F985dE336eAf6F4 --network ropsten
 This command to verify the deployed contract. 
+
 Verify with arguments:
-e.g: npx hardhat verify --constructor-args scripts/verify_arguments.js 0x8da5f2766F315F5910F5Ffe7DB646dd88FB5d7a4 --network ropsten
+npx hardhat verify --constructor-args scripts/verify_exballot_arg.js 0x8da5f2766F315F5910F5Ffe7DB646dd88FB5d7a4 --network ropsten
 
 
 # Ether Basics
