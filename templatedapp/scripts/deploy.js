@@ -22,6 +22,13 @@ const deployExAuction = async() => {
     return _contract;
 }
 
+const deployExSafePurchase = async() => {
+    const contractF = await hre.ethers.getContractFactory('ExSafePurchase');
+    const _contract = await contractF.deploy({value: ethers.utils.parseEther('0.002')});
+    await _contract.deployed();
+    return _contract;
+}
+
 const main = async () => {
     const [deployer] = await hre.ethers.getSigners();
     const accountBalance = await deployer.getBalance();
@@ -29,7 +36,8 @@ const main = async () => {
     console.log("Account balance: ", accountBalance);
     
     //const deployed_contract = await deployExBallot();
-    const deployed_contract = await deployExAuction();
+    //const deployed_contract = await deployExAuction();
+    const deployed_contract = await deployExSafePurchase();
     
     await deployed_contract.deployed();    
     console.log("the contract is deplayed at: ", deployed_contract.address);

@@ -88,6 +88,5 @@ contract ExBallot {
         Proposal storage winningProposal_ = proposals[ winningno ];
         winnerName_ = winningProposal_.name;
     }
-
 }
 
