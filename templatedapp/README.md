@@ -22,18 +22,22 @@ This is the contract verify plugin
 
 
 2. npx hardhat run scripts/run.js
+
 This command to run contract test scripts locally
 
 
 3. npx hardhat run scripts/deploy.js --network ropsten
+
 This command to deploy the contract to blockchain per hardhat.config.js
 
 4. npx hardhat verify 0xc9E7f50B87a3Ec7cf59960612F985dE336eAf6F4 --network ropsten
+
 This command to verify the deployed contract. 
 
 Verify with arguments:
+```
 npx hardhat verify --constructor-args scripts/verify_exballot_arg.js 0x8da5f2766F315F5910F5Ffe7DB646dd88FB5d7a4 --network ropsten
-
+```
 
 # Ether Basics
 
@@ -94,15 +98,30 @@ Transaction fee = n of gas * ( base fee + tip) = xxxxxxxxx gwei
     - data location: 
       - memory 
         - lifetime is limited to an external function call
+      
       - storage
-        - state variables are stored
-        - the lifetime is limited to the lifetime of a contract
+          state variables are stored;the lifetime is limited to the lifetime of a contract
+          
+          Lead Solidity dev chriseth: “You can think of storage as a large array that has a virtual structure… a structure you cannot change at runtime - it is determined by the state variables in your contract”
+
+          If you declare variables in functions without the memory keyword, then solidity will try to use the storage structure, which currently compiles, but can produce unexpected results. memory tells solidity to create a chunk of space for the variable at method runtime, guaranteeing its size and structure for future use in that method.
+
+          memory cannot be used at the contract level. Only in methods.
+
       - calldata  
         - contains the function arguments
+
+      https://stackoverflow.com/questions/33839154/in-ethereum-solidity-what-is-the-purpose-of-the-memory-keyword  
 
 
     - mapping
     
     - Arrays
-      -
+      
+4. Import external smart contracts and liberaries
+
+OpenZeppelin is the golden stanadard smart contract library
+npm install @openzeppelin/contracts --save
+import "openzeppelin-solidity/contracts/access/Ownable.sol";
+
 
