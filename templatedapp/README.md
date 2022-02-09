@@ -118,10 +118,32 @@ Transaction fee = n of gas * ( base fee + tip) = xxxxxxxxx gwei
     
     - Arrays
       
-4. Import external smart contracts and liberaries
+4. Inheritance:
+   - virtual, override 
+   - abstract, interface
+   - super.f(..) will use JUMP and not a message call
+   - The mutability may be changed to a more strict one
+      - external -> public; nonpayable -> view or pure; view -> pure; payable can't be changed
+   - in multiple inheritance, the given bases are searched from right to left in a depth-first manner, stopping at the first match   
 
-OpenZeppelin is the golden stanadard smart contract library
-npm install @openzeppelin/contracts --save
-import "openzeppelin-solidity/contracts/access/Ownable.sol";
+5. Liberaries
+
+  OpenZeppelin is the golden stanadard smart contract library
+  npm install @openzeppelin/contracts --save
+  import "openzeppelin-solidity/contracts/access/Ownable.sol";
+
+  - External call is DELEGATECALL
+  - Internal call is JUMP call: types stored in memory will be passed by reference 
+  - cannot:
+    - have state variables
+    - inherit nor be inherited
+    - receive Ether
+    - be destroyed
+  - using L for T
+
+6. Inline Assemby (Yul)
+  low level assembly code
+
+
 
 
