@@ -47,7 +47,7 @@ Transaction fee = n of gas * ( base fee + tip) = xxxxxxxxx gwei
 
 # Solidity
 
-1. Value Types
+1. Value Types: passed by value
 
    - Boolean:   
     ```
@@ -58,6 +58,9 @@ Transaction fee = n of gas * ( base fee + tip) = xxxxxxxxx gwei
    
    - Address:   adress, address payable
      - Members of Addresses
+       - balance, transfer, send
+       - call, delegatecall, staticcall
+       - code, codehash
    
    - Fixed-size byte arrays
     ```
@@ -86,10 +89,15 @@ Transaction fee = n of gas * ( base fee + tip) = xxxxxxxxx gwei
 
    - Enums
 
-2. Function Types:
+2. Function:
 
-    - external (public) /internal
-    - pure/view/payable
+    - type: external (public) /internal
+    - visibility: pure/view/payable
+    - internal call is JUMP call
+    - external call is 
+    - external function:
+      - address 
+      - selector: The first four bytes of the call data
 
 3. Reference Types
 
@@ -109,15 +117,74 @@ Transaction fee = n of gas * ( base fee + tip) = xxxxxxxxx gwei
           memory cannot be used at the contract level. Only in methods.
 
       - calldata  
-        - contains the function arguments
+        - a non-modifiable, non-persistent area where function arguments are stored, and behaves mostly like memory;
+        - try to use calldata as data location because it will avoid copies and also makes sure that the data cannot be modified.
 
       https://stackoverflow.com/questions/33839154/in-ethereum-solidity-what-is-the-purpose-of-the-memory-keyword  
 
+      - Data location and assignment behaviour
+
+        An assignment or type conversion that changes the data location will always incur an automatic copy operation, while assignments inside the same data location only copy in some cases for storage types.
+        - storage <=> memory(calldata)  : copy
+        - memory  <=> memory            : reference
+        - storage => local storage      : reference
+        - * => storage                  : copy   
 
     - mapping
+      - a hash tables, which are virtually initialised such that every possible key exists and is mapped to a default value 
+      - the key data is not stored in a mapping, only its keccak256 hash is used to look up the value
+      - So:
+        - mappings do not have a length
+        - mappings do not have concept of key or vaule being set
+        - cannot be used as parameters or return parameters of contract functions that are publicly visible
     
     - Arrays
-      
+      - bytes and string 
+        - is packed tightly in calldata and memory
+        - use bytes for arbitrary-length raw byte data and string for arbitrary-length string (UTF-8) data
+        - If you can limit the length to a certain number of bytes, always use one of the value types bytes1 to bytes32 because they are much cheaper
+        - bytes.concat
+        - memory arrays with dynamic length can be created using the new operator
+          
+          ```
+          // SPDX-License-Identifier: GPL-3.0
+          pragma solidity >=0.4.16 <0.9.0;
+
+          contract C {
+              function f(uint len) public pure {
+                  uint[] memory a = new uint[](7);
+                  bytes memory b = new bytes(len);
+                  assert(a.length == 7);
+                  assert(b.length == len);
+                  a[6] = 8;
+              }
+          }
+          ```
+
+    - struct
+
+      ```
+      struct Campaign {
+        address payable beneficiary;
+        uint fundingGoal;
+        uint numFunders;
+        uint amount;
+        mapping (uint => Funder) funders;
+      }
+
+      uint numCampaigns;
+      mapping (uint => Campaign) campaigns;
+
+      function newCampaign(address payable beneficiary, uint goal) public returns (uint campaignID) {
+          campaignID = numCampaigns++; // campaignID is return variable
+          // We cannot use "campaigns[campaignID] = Campaign(beneficiary, goal, 0, 0)"
+          // because the right hand side creates a memory-struct "Campaign" that contains a mapping.
+          Campaign storage c = campaigns[campaignID];
+          c.beneficiary = beneficiary;
+          c.fundingGoal = goal;
+      }
+      ```
+
 4. Inheritance:
    - virtual, override 
    - abstract, interface

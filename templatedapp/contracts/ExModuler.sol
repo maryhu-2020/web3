@@ -50,8 +50,6 @@ library BigInt {
     }
 }
 
-
-
 /**
  */
 contract ExModuler {
@@ -72,4 +70,43 @@ contract ExModuler {
         assert(z.limb(1) > 0);
     }
 
+}
+
+
+//another way to call another contract
+contract Oracle {
+    struct Request {
+        bytes data;
+        function(uint) external callback;
+    }
+
+    Request[] private requests;
+    event NewRequest(uint);
+
+    function query(bytes memory data, function(uint) external callback) public {
+        requests.push(Request(data, callback));
+        emit NewRequest(requests.length - 1);
+    }
+
+    function reply(uint requestID, uint response) public {
+        // Here goes the check that the reply comes from a trusted source
+        requests[requestID].callback(response);
+    }
+}
+
+contract OracleUser {
+    Oracle constant private ORACLE_CONST = Oracle(address(0x00000000219ab540356cBB839Cbe05303d7705Fa)); // known contract
+    uint private exchangeRate;
+
+    function buySomething() public {
+        ORACLE_CONST.query("USD", this.oracleResponse);
+    }
+
+    function oracleResponse(uint response) public {
+        require(
+            msg.sender == address(ORACLE_CONST),
+            "Only oracle can call this."
+        );
+        exchangeRate = response;
+    }
 }
