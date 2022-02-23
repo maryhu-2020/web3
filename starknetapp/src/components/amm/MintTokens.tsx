@@ -1,31 +1,35 @@
-import React, {useState, FormEvent,ChangeEvent} from "react";
-import { useStarknet,useStarknetInvoke } from "@starknet-react/core";
-import { useAMMContract } from "~/hooks/amm";
-import {useForm} from "~/hooks/form"
+import { useForm } from "~/hooks/form"
+import { useStarknet, useStarknetInvoke } from "@starknet-react/core"
+import {useAMMContract} from "~/hooks/amm"
 
-export function InitPool(){
-    const {account} = useStarknet()
+export function MintTokens(){
+    const {account} = useStarknet() 
     const {contract:ammContract} = useAMMContract()
-    const {invoke} = useStarknetInvoke({ contract:ammContract, method:'init_pool'})
-    
-    const initialState ={  
+    const {invoke} = useStarknetInvoke({contract:ammContract, method:'add_demo_token'})
+
+
+    function addTokenToAccount(){
+        invoke({args:{
+            'account_id': account,
+            'token_a_amount': values.NKI,
+            'token_b_amount': values.NDL
+        }})
+    }
+
+    const initoalState = {
         NKI:0,
         NDL:0
     }
 
-    async function initPool() {        
-        invoke({args:{ 'token_a':values.NKI,'token_b':values.NDL}})
-    }
+    const {onChange, onSubmit, values} = useForm(addTokenToAccount ,initoalState)
 
-    const { onChange,onSubmit,values} = useForm(initPool, initialState)
-
-    if (!account){
-        return null
+    if( !account){
+        return null;
     }
 
     return(        
         <form onSubmit={onSubmit}>
-            <h1>Initialize Pool</h1>
+            <h1>Mint Tokens For Connected Account</h1>
             <label>Number of NKI:
                 <input 
                     type="number" 
@@ -47,4 +51,5 @@ export function InitPool(){
                 <input type="submit" />
             </form>
     )
+
 }
